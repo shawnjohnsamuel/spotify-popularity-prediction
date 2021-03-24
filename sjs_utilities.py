@@ -60,20 +60,57 @@ def evaluate(name, estimator, X_train, X_test, y_train, y_test, use_decision_fun
     # print scores
     print("          | Train  | Test   |")
     print("          |-----------------|")
-    print(f"Precision | {precision_score(y_train, train_preds):.4f} | {precision_score(y_test, test_preds):.4f} |")
-    print(f"F1 Score  | {f1_score(y_train, train_preds):.4f} | {f1_score(y_test, test_preds):.4f} |")
+    print(f"Precision | {precision_score(y_train, train_preds)*100:.2f}% | {precision_score(y_test, test_preds)*100:.2f}% |")
+    print(f"F1 Score  | {f1_score(y_train, train_preds)*100:.2f}% | {f1_score(y_test, test_preds)*100:.2f}% |")
     if type(train_out) == np.ndarray:
-        print(f"ROC-AUC   | {roc_auc_score(y_train, train_out):.4f} | {roc_auc_score(y_test, test_out):.4f} |")
+        print(f"ROC-AUC   | {roc_auc_score(y_train, train_out)*100:.2f}% | {roc_auc_score(y_test, test_out)*100:.2f}% |")
     
     # add the row to metrics df and list in reverse order so current is at top
     new_row = []
     new_row.append(name)
-    new_row.append(format(precision_score(y_test, test_preds),'.4f'))
-    new_row.append(format(f1_score(y_test, test_preds),'.4f'))
-    new_row.append(format(roc_auc_score(y_test, test_out),'.4f'))
+    new_row.append(f"{precision_score(y_test, test_preds)*100:.2f}%")
+    new_row.append(f"{f1_score(y_test, test_preds)*100:.2f}%")
+    new_row.append(f"{roc_auc_score(y_test, test_preds)*100:.2f}%")
 
     eval_metrics.loc[len(eval_metrics.index)] = new_row
     display(eval_metrics.sort_index(ascending=False, axis=0))
+
+
+
+def plot_feature_imp(estimator, X):
+    '''
+    Plot feature importance of model
+    
+    *Created for Spotify Project*
+    '''
+    
+    # capture feature importances
+    feats = estimator.feature_importances_
+    feature_imps = dict(zip(X.columns, feats))
+
+    # creating list of column names
+    feat_names=list(X.columns)
+
+    # Sort feature importances in descending order
+    indices = np.argsort(feats)[::-1]
+
+    # Rearrange feature names so they match the sorted feature importances
+    names = [feat_names[i] for i in indices]
+
+    # Create plot
+    plt.figure(figsize = [8,5])
+
+    # Create plot title
+    plt.title("Feature Importance")
+
+    # Add bars
+    plt.bar(range(X.shape[1]), feats[indices])
+
+    # Add feature names as x-axis labels
+    plt.xticks(range(X.shape[1]), names, rotation=50, ha = 'right')
+
+    # Show plot
+    plt.show()
 
 
 # Function designed for Flatiron Phase 2 Project - primarily for linear regression
