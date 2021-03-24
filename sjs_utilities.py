@@ -12,8 +12,9 @@ def crossval(estimator, X, y, cv=5, scoring='precision'):
     Cross Fold Score with a default of 5 folds and score set to precision
     '''
     cv_scores = cross_val_score(estimator, X, y, cv=cv, scoring=scoring)
-    print(f"Avg score of {cv_scores.mean():.4f} with std of {cv_scores.std():.2f}")
-    print(f"The scores were {cv_scores}:.4f")
+    print(f"Avg {scoring.capitalize()} Score of {cv_scores.mean():.4f} with Std Dev of {cv_scores.std():.4f}")
+    print('')
+    print(f"The scores were: {list(map('{:.4f}'.format,cv_scores))}")
 
 # Function designed for Flatiron Phase 3 Project - primarily for linear regression
 
@@ -51,7 +52,7 @@ def evaluate(name, estimator, X_train, X_test, y_train, y_test, use_decision_fun
       
     # plot test confusion matrix
     plot_confusion_matrix(estimator, X_test, y_test,
-                          values_format=".0f",
+                          values_format=",.0f",
                           display_labels = ['Not Popular', 'Popular'])                            
     plt.title('Confusion Matrix (Test Set)')
     plt.show()
