@@ -6,8 +6,6 @@
 
 The music industry is driven by the popularity of particular songs and Spotify is at the center of driving that success. In this project I use machine learning to determine whether or not a song will be popular on Spotify's platform. The business use case of this tool would be for a record label to decide if a song has the right mix of musical attributes to warrent marketing and distribution dollars to be put behind it. The data is obtained through Spotify's API and available on Kaggle. Our business case lends itself to optomizing on the Precision Score and we will test several major machine learning models utizling pipelines and grid searches. The Random Forest model had the highest Precision Score of 73% without overfitting and further optomizing options are available.
 
----
-
 ## Business Problem
 
 There are a lot of songs on Spotify. To the tune of [70 million tracks](https://newsroom.spotify.com/company-info/) as of December 2020 with an average of 60,000 songs being added every day. There are many variables that determine which songs out of this massive library to become popular. Considering that the worlds largest 4 music lables own [87% of the content on Spotify](https://www.thelocal.se/20180302/the-story-of-spotify-swedens-controversial-king-of-music-streaming/), what drives the popularity of a particular song is of great interest to these entities. Our goal with this project is to build a machine learning model that can predict whether a song will be popular or not based on a set of features. The popularity of the song will be based on Spotify's own proprietry ranking. This will allow record labels to determine which songs are worth putting more marketing dollars behind. 
@@ -17,8 +15,6 @@ When making decisions regarding which models and metrics to use, it is always im
 - **Type II Error (FN)** = predicting a song *will not* be popular when it *will*  
 
 In this particular business case - if a song is predicted to be positive, I would recommend a record label put marketing dollars behind that song to generate more plays and more profit. A *Type I Error* would cause money to be lost up front. This would mean increased cost and also less profit - leaving the record label in the red. A *Type II Error* on the other hand, would be a loss of potential profit due to the lost opportunity of a popular song. With that in mind we would emphasis the **Precision** score as our primary metric to minimize *False Positives*. We will also consider the **F1 Score** to give us a balance of Type I and Type II errors. 
-
----
 
 ## Data Understanding
 
@@ -48,8 +44,6 @@ Categorical:
 - **artists** - *The list of artists credited for production of the track*
 - **release_date** - *Date of release mostly in yyyy-mm-dd format, however precision of date may vary)*
 - **name** - *Title of the song*
-
----
 
 ## Methods
 
@@ -91,7 +85,6 @@ I created 6 models beyond our base model and found that there were varying R2 va
 ### Interesting Finding:
 ![older homes in seattle limit tend to be more expensive than newer homes](images/age_vs_price_in_or_out_seattle.png)  
 One interesting finding was that older homes within the Seattle city limits tend to be more expensive than newer homes. This trend is reversed outside of Seattle.   
-
 ## Recommendations
 
 We set out to build a model that would predict what songs would be popular as precisely as possible. Of the 10 major models we built and many iterations that we tested, the one that performed the highest on the precision score was the Random Forest. It had a precsion score of 73.02% and was slightly underfit on the validation set. We recommend optimizing this model further. Though this model sacrifices quite a bit in terms of False Negatives (the F1 score is 32%) it minimizes False Positives by design. This is important to us to minimize the cost based on our business undersstanding and application of this model. 
