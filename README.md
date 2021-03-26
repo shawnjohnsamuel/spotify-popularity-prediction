@@ -47,15 +47,6 @@ Categorical:
 
 ## Methods
 
-First we explored the relevant features and created visualizations to gain an understanding of the data. Below you can see some of the visualizations generated from data exploration:  
-
-### Distribution of Song Energy Dilineated by Popularity 
-![example of categorical variabe grade versus price](images/2_energy_popularity.png)
-
-### Distribution of Song Tempos Dilineated by Popularity 
-![example of continuous variabe square feet versus price](images/3_tempo_popularity.png)
-
-
 After analyzing the target column, I decided to set the popularity of .3 as the cutoff to create a binary feature called "popular". The imbalance was as follows:
 
 | 1 (Popular) | 0.394796 |
@@ -65,6 +56,14 @@ After analyzing the target column, I decided to set the popularity of .3 as the 
 Below is a graph representing the distribution of the popular vs. not popular classes on the original continuous popularity percentage:
 
 ![plot showing the distribution of popular vs not popular songs](images/1b_spotify_popularity_readme.png)  
+
+The distributino of features was explored in relation to the popularity threshhold. Some features were distributed simliarly for popular and not popular songs (see 'Song Tempos' example below) and some features were distrubuted differentl for popular and not popular songs. My guess was that the ones that were not distrubuted similalry would be contributing factors to predicting popularity. Below you can see some of the visualizations generated from data exploration:  
+
+### Distribution of Song Tempos Dilineated by Popularity 
+![Distribution of Song Tempos Dilineated by Popularity ](images/3_tempo_popularity.png)
+
+### Distribution of Song Energy Dilineated by Popularity 
+![Distribution of Song Energy Dilineated by Popularity](images/2_energy_popularity.png)
 
 Several irrelvant features were dropped and an initial baseline Logistic Regression regression was built. After that several models with built utilizing pipelines and grid search. The results are presentet below in reverse sequential order:
 
