@@ -110,6 +110,6 @@ For additional info, contact Shawn Samuel at [shawnjohnsamuel@gmail.com](mailto:
 ├── images
 ├── README.md
 ├── project-notebook.ipynb
-├── project-presendation.pdf
+├── project-presentation.pdf
 └── sjs_utilities.py
 ```
