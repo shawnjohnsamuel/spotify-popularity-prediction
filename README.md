@@ -76,15 +76,12 @@ Several irrelvant features were dropped and an initial baseline Logistic Regress
 
 I created 6 models beyond our base model and found that there were varying R2 values ranging from .532 to .609. I found that the last model minimized the MAE and RMSE to the smallest amount. The last model was slightly underfit based on the train vs test. This model was then run on the entire data set and returned a R2 of 0.532. This means that our final model can explain 53.2% of variance in prices. Based on the train-test split, this model is generalizable and can be used for data not yet seen.  Below you can see some of the visualizations generated from data exploration:  
 
-### Example Of Continuous Variable (Sqft vs. Price)  
-![example of continuous variabe square feet versus price](images/cont_variable_sqft_vs_price.png)
+### Distribution of Song Energy Dilineated by Popularity 
+![example of categorical variabe grade versus price](images/2_energy_popularity.png)
 
-### Example Of Categorical Variable (Grade vs. Price)  
-![example of categorical variabe grade versus price](images/cat_variable_grade_vs_price.png)
-
-### Interesting Finding:
-![older homes in seattle limit tend to be more expensive than newer homes](images/age_vs_price_in_or_out_seattle.png)  
-One interesting finding was that older homes within the Seattle city limits tend to be more expensive than newer homes. This trend is reversed outside of Seattle.   
+### Distribution of Song Tempos Dilineated by Popularity 
+![example of continuous variabe square feet versus price](images/3_tempo_popularity.png)
+   
 ## Recommendations
 
 We set out to build a model that would predict what songs would be popular as precisely as possible. Of the 10 major models we built and many iterations that we tested, the one that performed the highest on the precision score was the Random Forest. It had a precsion score of 73.02% and was slightly underfit on the validation set. We recommend optimizing this model further. Though this model sacrifices quite a bit in terms of False Negatives (the F1 score is 32%) it minimizes False Positives by design. This is important to us to minimize the cost based on our business undersstanding and application of this model. 
