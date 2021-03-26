@@ -92,9 +92,9 @@ There are also some interesting features of this model that could contribute to 
 
 I suggest further optomizing the model. Some potential areas include:
 
-- 1) Finding out what the effect of the release date is. The date could be engineered to determine the month, week number or even generally the season that a song was released.
-- 2) The XGBoost model has great potential in providing a balanced F1 score to minimize the lost opportunity of False Negatives.  
-- 3) This data set could be paired with a lyrics data set to determine the impact of lyrics on popularity of songs
+1) Finding out what the effect of the release date is. The date could be engineered to determine the month, week number or even generally the season that a song was released.
+2) The XGBoost model has great potential in providing a balanced F1 score to minimize the lost opportunity of False Negatives.  
+3) This data set could be paired with a lyrics data set to determine the impact of lyrics on popularity of songs
 
 ## For More Information
 
