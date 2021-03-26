@@ -47,13 +47,22 @@ Categorical:
 
 ## Methods
 
-After visualzing the featurs and analyzing the target column, I decided to set the popularity of .3 as the cutoff to create a binary feature called "popular". The imbalance was as follows:
+First we explored the relevant features and created visualizations to gain an understanding of the data. Below you can see some of the visualizations generated from data exploration:  
+
+### Distribution of Song Energy Dilineated by Popularity 
+![example of categorical variabe grade versus price](images/2_energy_popularity.png)
+
+### Distribution of Song Tempos Dilineated by Popularity 
+![example of continuous variabe square feet versus price](images/3_tempo_popularity.png)
+
+
+After analyzing the target column, I decided to set the popularity of .3 as the cutoff to create a binary feature called "popular". The imbalance was as follows:
 
 | 1 (Popular) | 0.394796 |
 |-----------------|----------|
 |   0 (Not Popular)   | 0.605204 |
 
-And below is a graph representing the distribution of the popular vs. not popular classes on the original continuous popularity percentage:
+Below is a graph representing the distribution of the popular vs. not popular classes on the original continuous popularity percentage:
 
 ![plot showing the distribution of popular vs not popular songs](images/1b_spotify_popularity_readme.png)  
 
@@ -71,16 +80,6 @@ Several irrelvant features were dropped and an initial baseline Logistic Regress
 |   2 |        GridSearch LogReg |    65.88% |   62.15% |  69.50% |
 |   1 |          Balanced LogReg |    60.61% |   66.56% |  71.30% |
 |   0 |          Baseline LogReg |    65.87% |   62.18% |  69.51% |
-
-## Results
-
-I created 6 models beyond our base model and found that there were varying R2 values ranging from .532 to .609. I found that the last model minimized the MAE and RMSE to the smallest amount. The last model was slightly underfit based on the train vs test. This model was then run on the entire data set and returned a R2 of 0.532. This means that our final model can explain 53.2% of variance in prices. Based on the train-test split, this model is generalizable and can be used for data not yet seen.  Below you can see some of the visualizations generated from data exploration:  
-
-### Distribution of Song Energy Dilineated by Popularity 
-![example of categorical variabe grade versus price](images/2_energy_popularity.png)
-
-### Distribution of Song Tempos Dilineated by Popularity 
-![example of continuous variabe square feet versus price](images/3_tempo_popularity.png)
    
 ## Recommendations
 
@@ -109,8 +108,8 @@ For additional info, contact Shawn Samuel at [shawnjohnsamuel@gmail.com](mailto:
 ```
 ├── data
 ├── images
+├── README.md
 ├── project-notebook.ipynb
 ├── project-presendation.pdf
-├── README.md
 └── sjs_utilities.py
 ```
