@@ -53,11 +53,11 @@ After analyzing the target column, I decided to set the popularity of .3 as the 
 |-----------------|----------|
 |   0 (Not Popular)   | 0.605204 |
 
-Below is a graph representing the distribution of the popular vs. not popular classes on the original continuous popularity percentage:
+Below is a graph representing the distribution of the popular vs. not popular labels in relation to the original continuous popularity percentage:
 
 ![plot showing the distribution of popular vs not popular songs](images/1b_spotify_popularity_readme.png)  
 
-The distributino of features was explored in relation to the popularity threshhold. Some features were distributed simliarly for popular and not popular songs (see 'Song Tempos' example below) and some features were distrubuted differentl for popular and not popular songs. My guess was that the ones that were not distrubuted similalry would be contributing factors to predicting popularity. Below you can see some of the visualizations generated from data exploration:  
+The distribution of features was explored in relation to the popularity threshhold. Some features were distributed simliarly for popular and not popular songs (see 'Song Tempos' example below) and some features were distrubuted differentl for popular and not popular songs. My guess was that the ones that were not distrubuted similalry would be contributing factors to predicting popularity. Below you can see some of the visualizations generated from data exploration:  
 
 ### Distribution of Song Tempos Dilineated by Popularity 
 ![Distribution of Song Tempos Dilineated by Popularity ](images/3_tempo_popularity.png)
