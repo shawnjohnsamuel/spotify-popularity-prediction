@@ -59,10 +59,8 @@ Below is a graph representing the distribution of the popular vs. not popular la
 
 The distribution of features was explored in relation to the popularity threshhold. Some features were distributed simliarly for popular and not popular songs (see 'Song Tempos' example below) and some features were distrubuted differentl for popular and not popular songs. My guess was that the ones that were not distrubuted similalry would be contributing factors to predicting popularity. Below you can see some of the visualizations generated from data exploration:  
 
-### Distribution of Song Tempos Dilineated by Popularity 
 ![Distribution of Song Tempos Dilineated by Popularity ](images/3_tempo_popularity.png)
 
-### Distribution of Song Energy Dilineated by Popularity 
 ![Distribution of Song Energy Dilineated by Popularity](images/2_energy_popularity.png)
 
 Several irrelvant features were dropped and an initial baseline Logistic Regression regression was built. After that several models with built utilizing pipelines and grid search. The results are presentet below in reverse sequential order:
