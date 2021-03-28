@@ -1,63 +1,98 @@
-![first-time home buyer offer price tool by shawn samuel](images/house-price-prediction-banner.png)
-# Recommending "Offer Price" to First-Time Home Buyers
-
-**Authors**: [Shawn Samuel](mailto:shawnjohnsamuel@gmail.com)  
+![The Spotify Popularity Predictor](images/0_Spotify_Popularity_Banner.png)
+# Predicting the Popularity of Songs on Spotify
+**Author:** Shawn Samuel
 
 ## Overview
 
-This project has tasked us to formulate a business project around a given data set. The data set describes house sales over a 1 year period in King County, USA. I have decided to develop a price prediction tool for a real estate agency that focuses on the needs of home buyers. I will be cleaning the data, testing various transformations like log transformation for continuous variables, one hot encoding for categorical variables, and scaling to prepare the data for multiple linear regression models. We were able to build statistically significant model that could explain 53.2% of the variation in prices from our prediciton and strongly feel that further development will lead to a more accurate tool that can be extremely useful for buyer real estate agents assisting first-time home buyers.
+The music industry is driven by the popularity of particular songs and Spotify is at the center of driving that success. In this project I use machine learning to determine whether or not a song will be popular on Spotify's platform. The business use case of this tool would be for a record label to decide if a song has the right mix of musical attributes to warrent marketing and distribution dollars to be put behind it. The data is obtained through Spotify's API and available on Kaggle. Our business case lends itself to optomizing on the Precision Score and we will test several major machine learning models utizling pipelines and grid searches. The Random Forest model had the highest Precision Score of 73% without overfitting and further optomizing options are available.
 
 ## Business Problem
 
-The housing market is booming! With decreased mortgage rates, increased demand and decreased supply - housing prices are also sky high. According to the New York Times, typically 55% to 70% of American home buyers are selling one home and buying another, with the remainder buying a home for the first time. However in recent months, the number of first-time buyers has sharply risen. This leads to increased demand without an equivalent increase in supply. 
+There are a lot of songs on Spotify. To the tune of [70 million tracks](https://newsroom.spotify.com/company-info/) as of December 2020 with an average of 60,000 songs being added every day. There are many variables that determine which songs out of this massive library to become popular. Considering that the worlds largest 4 music lables own [87% of the content on Spotify](https://www.thelocal.se/20180302/the-story-of-spotify-swedens-controversial-king-of-music-streaming/), what drives the popularity of a particular song is of great interest to these entities. Our goal with this project is to build a machine learning model that can predict whether a song will be popular or not based on a set of features. The popularity of the song will be based on Spotify's own proprietry ranking. This will allow record labels to determine which songs are worth putting more marketing dollars behind. 
 
-I have been tasked with helping first-time home buyers with one of the crucial elements of home buying - determining an 'offer price'. There can be many factors that contribute to this. And being first time home buyers, it can be daunting to figure out what this magic price should be. 
+When making decisions regarding which models and metrics to use, it is always important to determine which errors will be more costly. For our particularl case - there are the ramifications of errors:  
+- **Type I Error (FP)** = predicting a song *will* be popular when it *will not*  
+- **Type II Error (FN)** = predicting a song *will not* be popular when it *will*  
 
-This important price point is often guided buy Buyer's Real Estate Agent and this data driven prediction tool is being built for one such Agency. I will use the historical data of houses sold in King County, Washington to predict the best asking price based on relevant factors.  
+In this particular business case - if a song is predicted to be positive, I would recommend a record label put marketing dollars behind that song to generate more plays and more profit. A *Type I Error* would cause money to be lost up front. This would mean increased cost and also less profit - leaving the record label in the red. A *Type II Error* on the other hand, would be a loss of potential profit due to the lost opportunity of a popular song. With that in mind we would emphasis the **Precision** score as our primary metric to minimize *False Positives*. We will also consider the **F1 Score** to give us a balance of Type I and Type II errors. 
 
-## Data
+## Data Understanding
 
-The data set [('kc_house_data.csv')](data/kc_house_data.csv) describes house sales in King County, Washington, USA (which includes the city of Seattle) between 2014 and 2015. There are 21,597 rows of entries across 21 columns, including the target variable 'price'. The dependant variables include information about individual homes that have been sold such as square footage, year built, and many more details. 
+The [spotify data set](data/spotify_data.csv) was obtained from [Kaggle](https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks) and contains audio features of 175k+ songs released in between 1921 and 2021. The features are described below:
 
-We will prepare and explore the data to see which ones have the most impact for asking price determination for first-time home buyers. We will focus on the middle and low end of the market in terms of price, as first time home buyers will likely not be in the luxury home market.
+Numerical:
+- **acousticness** (Ranges from 0 to 1) - *The relative metric of the track being acoustic*
+- **danceability** (Ranges from 0 to 1) - *The relative measurement of the track being danceable*
+- **energy** (Ranges from 0 to 1) - *The energy of the track*
+- **duration_ms** (Integer typically ranging from 200k to 300k) - *The length of the track in milliseconds (ms)*
+- **id** (Alphanumeric) - *The primary identifier for the track, generated by Spotify*
+- **instrumentalness** (Ranges from 0 to 1) - *The relative ratio of the track being instrumental
+- **valence** (Ranges from 0 to 1) - *The positiveness of the track*
+- **popularity** (Ranges from 0 to 100) - *The popularity of the song lately, default country = US*
+- **tempo** (Float typically ranging from 50 to 150) - *The tempo of the track in Beat Per Minute (BPM)*
+- **liveness** (Ranges from 0 to 1) - *The relative duration of the track sounding as a live performance*
+- **loudness** (Float typically ranging from -60 to 0) - *Relative loudness of the track in decibel (dB)*
+- **speechiness** (Ranges from 0 to 1) - *The relative length of the track containing any kind of human voice*
+- **year** (Ranges from 1921 to 2020) - *The release year of track*  
+
+Binary:
+- **mode** (0 = Minor, 1 = Major) - *Whether the track starts with a major chord progression or not*
+- **explicit** (0 = No explicit content, 1 = Explicit content) - *Whether the track contains explicit content or not*
+
+Categorical:
+- **key** - *All keys on octave encoded as values ranging from 0 to 11, starting on C as 0, C# as 1 and so on…)*
+- **artists** - *The list of artists credited for production of the track*
+- **release_date** - *Date of release mostly in yyyy-mm-dd format, however precision of date may vary)*
+- **name** - *Title of the song*
 
 ## Methods
 
-I built an initial baseline model using recommended features and no transformations. After this I followed the following plan:
+After analyzing the target column, I decided to set the popularity of .3 as the cutoff to create a binary feature called "popular". The imbalance was as follows:
 
-☐ **Create a pyfile function for subsequent analysis** - this was done to make modeling more effecient  
-☐ **Identify and tackle outliers** - I noticed a bedroom outlier in particular  
-☐ **Log continous variables** - to removeness skewness of original data  
-☐ **One Hot Encode categorical variables** - to encode categories for modeling  
-☐ **Create an age columns based on year built or renovation year** - categorize based on relative age  
-☐ **Create a category of within Seattle vs. outside Seattle** - see what impact a generalized location will have on model  
-☐ **Set a price ceiling** - our tool will be utilized for first-time home buyers so will narrow our house prices  
+| 1 (Popular) | 0.394796 |
+|-----------------|----------|
+|   0 (Not Popular)   | 0.605204 |
 
-## Results
+Below is a graph representing the distribution of the popular vs. not popular labels in relation to the original continuous popularity percentage:
 
-I created 6 models beyond our base model and found that there were varying R2 values ranging from .532 to .609. I found that the last model minimized the MAE and RMSE to the smallest amount. The last model was slightly underfit based on the train vs test. This model was then run on the entire data set and returned a R2 of 0.532. This means that our final model can explain 53.2% of variance in prices. Based on the train-test split, this model is generalizable and can be used for data not yet seen.  Below you can see some of the visualizations generated from data exploration:  
+![plot showing the distribution of popular vs not popular songs](images/1b_spotify_popularity_readme.png)  
 
-### Example Of Continuous Variable (Sqft vs. Price)  
-![example of continuous variabe square feet versus price](images/cont_variable_sqft_vs_price.png)
+The distribution of features was explored in relation to the popularity threshhold. Some features were distributed simliarly for popular and not popular songs (see 'Song Tempos' example below) and some features were distrubuted differentl for popular and not popular songs. My guess was that the ones that were not distrubuted similalry would be contributing factors to predicting popularity. Below you can see some of the visualizations generated from data exploration:  
 
-### Example Of Categorical Variable (Grade vs. Price)  
-![example of categorical variabe grade versus price](images/cat_variable_grade_vs_price.png)
+![Distribution of Song Tempos Dilineated by Popularity ](images/3_tempo_popularity.png)
 
-### Interesting Finding:
-![older homes in seattle limit tend to be more expensive than newer homes](images/age_vs_price_in_or_out_seattle.png)  
-One interesting finding was that older homes within the Seattle city limits tend to be more expensive than newer homes. This trend is reversed outside of Seattle.   
+![Distribution of Song Energy Dilineated by Popularity](images/2_energy_popularity.png)
 
+Several irrelvant features were dropped and an initial baseline Logistic Regression regression was built. After that several models with built utilizing pipelines and grid search. The results are presentet below in reverse sequential order:
+
+| **Seq** |                    **Model** | **Precision** | **F1 Score** | **Roc-Auc** |
+|----:|-------------------------:|----------:|---------:|---------|
+|   9 |                  XGBoost |    68.48% |   67.20% |  73.11% |
+|   8 |        Gradient Boosting |    68.66% |   67.31% |  73.21% |
+|   7 | GridSearch Random Forest |    73.02% |   32.25% |  57.86% |
+|   6 |            Random Forest |    72.09% |   45.19% |  62.31% |
+|   5 | GridSearch Decision Tree |    68.55% |   51.48% |  64.45% |
+|   4 |      Tuned Decision Tree |    68.55% |   51.48% |  64.45% |
+|   3 |    Vanilla Decision Tree |    60.48% |   60.14% |  67.19% |
+|   2 |        GridSearch LogReg |    65.88% |   62.15% |  69.50% |
+|   1 |          Balanced LogReg |    60.61% |   66.56% |  71.30% |
+|   0 |          Baseline LogReg |    65.87% |   62.18% |  69.51% |
+   
 ## Recommendations
 
-In it's current form, this model is a better predictor of price than the simple mean price of \$540,296.60 or even median of \$450,000. I believe with further modeling, it can be very useful as a tool for buyer's real estate agents making offer price recommendations for time home-buyers. They can even make recommendations to first-time home buyers to reduce their price cost. For example, our model shows that square footage, whether or not the house is in Seattle as well as age greatly affect price. So to reduce cost, first-time home buyers can opt for smaller, slightly older homes outside of Seattle.
+We set out to build a model that would predict what songs would be popular as precisely as possible. Of the 10 major models we built and many iterations that we tested, the one that performed the highest on the precision score was the Random Forest. It had a precsion score of 73.02% and was slightly underfit on the validation set. We recommend optimizing this model further. Though this model sacrifices quite a bit in terms of False Negatives (the F1 score is 32%) it minimizes False Positives by design. This is important to us to minimize the cost based on our business undersstanding and application of this model. 
+
+There are also some interesting features of this model that could contribute to optomized song creation. This model determined that danceability, loudness and energy were the top contributing features towards determining the popularity of songs on Spotify. This could be included by the record label when evaluating songs. Below is a visualization of two of the top features (danceablity and loudness) in relation to song popularity. Visually, we can see the importance of these features in popularity:
+
+![plot of danceability vs loudness as it relates to song popularity on spotify](images/4_loudness_danceability_popularity.png)  
 
 ## Future Work
 
-I believe that having an offer price that is data-driven is a very strong tool for a Buyer's Real Estate Agent and so we would recommend this Real Estate Agency continue to support the development of this tool. This could empower the already intuitive decision making that experienced Real Estate Agents engage in. The following are some potential areas of future work:
+I suggest further optomizing the model. Some potential areas include:
 
-1) Creating separate prediction tools for different types of buyers - such as those looking to flip houses, first-time home buyers and luxury home buyers    
-2) Experiment with inclusion of all available parameters.  
-3) Build a graphical user interface where all available information can be input for easy use of prediction tool
+1) Finding out what the effect of the release date is. The date could be engineered to determine the month, week number or even generally the season that a song was released.
+2) The XGBoost model has great potential in providing a balanced F1 score to minimize the lost opportunity of False Negatives.  
+3) This data set could be paired with a lyrics data set to determine the impact of lyrics on popularity of songs
 
 ## For More Information
 
@@ -70,8 +105,8 @@ For additional info, contact Shawn Samuel at [shawnjohnsamuel@gmail.com](mailto:
 ```
 ├── data
 ├── images
-├── project-notebook.ipynb
-├── project-presendation.pdf
 ├── README.md
+├── project-notebook.ipynb
+├── project-presentation.pdf
 └── sjs_utilities.py
 ```
