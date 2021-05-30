@@ -1,5 +1,5 @@
 ![ZHVI Growth Predictions](images/0_Zillow_Time_Series_Banner.png)
-# Predicting the Popularity of Songs on Spotify
+# Predicting Growth in Zillow Home Value Index
 **Author:** Shawn Samuel
 
 ## Overview
@@ -22,19 +22,45 @@ For our purposes, index appreciation can be interpreted as the market’s total 
 
 Our methodoolgy had four main components. 
 
-1. Preprocessing - this included pulling in the latest data available from Zillow, melting the data so that it reflected time series for individual zip codes and then filtering those columns to contain information for desired zipcoddes. One important thing to note is that we made the decision to build our model on the trend from the lowest point (in terms of price) after the housing market crash of 2008.
+1. **Preprocessing** - this included pulling in the latest data available from Zillow, melting the data so that it reflected time series for individual zip codes and then filtering those columns to contain information for desired zipcoddes. One important thing to note is that we made the decision to build our model on the trend from the lowest point (in terms of price) after the housing market crash of 2008.
 ![Post Market Crash Timeseries Cutoff](images/1_time_cutoff.png)
-2. Build a Model - this included
+2. **Build a Model** - for modeling we focused on the [pmd auto ARIMA](https://alkaline-ml.com/pmdarima/modules/generated/pmdarima.arima.auto_arima.html) model. This included conducting stationairy tests, testing various train-test-splits, writing [custom functions](sjs_utilities.py) for ease of replication, buidling model for each of the desired zip codes.
+3. **Make Predicitons** - the model was then utilized to make and plot predictions for the next 12 months for each zip code as well as the confidence interval. 
+4. **Recommend Top Zip Codes** - using the predictions and historical information for each zip code, various filters were applied to select the top five recommended zip codes
    
 ## Results
 
+Below is an example of a good model and a bad model: ![Good model and bad model](images/2_results_models.png)
+
+We created a separate ARIMA model for each zip code and added metrics and information for each to a dataframe for comparison. Using the mean as a baseline we filtered the zipcodes based on a few factors:
+- Historical performance is higher than average
+- The predicted growth is higher than average
+- The AIC score is less than (better than) the average AIC score
+- The MAE of the validation set is less than the average MAE
+- The predicted growth is greater than 10%
+
+We then sorted the dataframe by historical growth. The reason for this is because this is an established value that we know to be true. Based on all of these factors, we can now select the top 5 cities as our recommendation for zip codes to invest in.
+
+Based on this, for this particular set of zip codes, we would select the following cities with their projected growth :
+1. East Rutherford - 16.35%
+2. Garfield - 18.99%
+3. Ridgefield Park - 20.02%
+4. Hackensack - 15.41%
+5. Bogota - 22.06%
+
 ## Conclusion
+
+As a First Time Homebuyer myself, I believe there is great value in a tool such as what we have created the backbone for. Price is an interesting and simple aggregate of many factors that influence the profitablity of homes in a given zip code. A time series model is a powerful way to utilize this important predictor to empower First Time Home Buyers who often get lost in many details. There are many elements of homebuying, if viewed as investment, would be extremely financially beneficial for FTHs. This applies to the home search process as well as the financing of the purchase. Fine-tuning and providing a tool like the above would be an important enabling and equipping value that a Real Estate Agency (such ACME) could provide it's clients. 
+
+This ARIMA model has been automatically tuned for best parameters. As described below, we think exploring more complex models and datasets could inform this early iteration of the prediction tool. Also the year 2020 and 2021 have been vastly different than the previous decade leading up to it, to the point of some claiming we are in a bubble. There are many factors contributing to the high prices which make modeling a time series somewhat restrictive. It may be beneficial to validate on other similar historical time frames. Also, any predicitons must be taken with a grain of salt as prices simply cannot go up forever, as any model that weighs the recent past may predict. We think further work must be done before this model can be ready for regular use. 
 
 ## Future Work
 
-I suggest further optomizing the model. Some potential areas include:
+There are multiple areas of potential future work:
 
-1. 
+1. Design a proprietary scoring model that takes the various relevant factors into account
+2. Explore other house pricing datasets and modeling packages such as Facebook Prophet 
+3. Build a GUI where users can select desired zipcodes from a map to feed into the model and return results
 
 ## For More Information
 
